@@ -33,8 +33,44 @@
     <meta name="theme-color" content="#00ff88">
     <meta name="apple-mobile-web-app-title" content="Trend Mafia">
     <meta name="application-name" content="Trend Mafia">
+    <meta name="msapplication-TileColor" content="#00ff88">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <!-- Structured Data / JSON-LD -->
+    <!-- Geo Tags -->
+    <meta name="geo.region" content="US">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="rating" content="general">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Structured Data / JSON-LD - Organization -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Trend Mafia",
+        "url": "https://trendmafia.io",
+        "logo": "https://trendmafia.io/og-image.png",
+        "description": "Professional DexScreener trending service with guaranteed results. 500+ tokens trended, 98% success rate.",
+        "sameAs": [
+            "https://t.me/cyberspartanx"
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "url": "https://t.me/cyberspartanx",
+            "availableLanguage": "English"
+        }
+    }
+    </script>
+
+    <!-- Structured Data / JSON-LD - Service -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -48,30 +84,95 @@
             "url": "https://trendmafia.io"
         },
         "areaServed": "Worldwide",
+        "serviceType": "Cryptocurrency Marketing",
         "hasOfferCatalog": {
             "@type": "OfferCatalog",
             "name": "Trending Packages",
             "itemListElement": [
                 {
                     "@type": "Offer",
-                    "name": "24 Hour Trending",
+                    "name": "24 Hour Trending - Quick Pump",
+                    "description": "24h trending position with guaranteed Top 10 spot on DexScreener",
                     "price": "1500",
                     "priceCurrency": "USD"
                 },
                 {
                     "@type": "Offer",
-                    "name": "3 Day Trending",
+                    "name": "3 Day Trending - Degen Special",
+                    "description": "72h trending position with guaranteed Top 5 spot and priority 24/7 support",
                     "price": "3500",
                     "priceCurrency": "USD"
                 },
                 {
                     "@type": "Offer",
-                    "name": "7 Day Trending",
+                    "name": "7 Day Trending - Whale Mode",
+                    "description": "Full week trending with guaranteed #1 position and VIP support",
                     "price": "6500",
                     "priceCurrency": "USD"
                 }
             ]
         }
+    }
+    </script>
+
+    <!-- Structured Data / JSON-LD - FAQ -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is DexScreener trending?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "DexScreener trending is a visibility feature that shows the most active tokens on the DexScreener platform. Getting your token trending increases exposure to millions of crypto traders and investors."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How long does it take to get trending?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "We start the trending process within 1 hour of confirmed payment. Your token will typically appear in trending positions within a few hours."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What payment methods do you accept?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "We accept cryptocurrency payments including ETH, SOL, and USDT for all our trending packages."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What is your success rate?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "We have a 98% success rate with over 500 tokens successfully trended on DexScreener."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Which blockchains do you support?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "We support trending for tokens on all major blockchains including Solana, Ethereum, Base, and more."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <!-- Structured Data / JSON-LD - WebSite -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Trend Mafia",
+        "url": "https://trendmafia.io",
+        "description": "Professional DexScreener trending service with guaranteed results"
     }
     </script>
 
@@ -775,10 +876,10 @@
     </style>
 </head>
 <body>
-    <div class="bg-grid"></div>
-    <div class="noise-overlay"></div>
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div class="noise-overlay" aria-hidden="true"></div>
 
-    <div class="floating-elements">
+    <div class="floating-elements" aria-hidden="true">
         <div class="floating-coin" style="left: 10%; animation-delay: 0s;">🚀</div>
         <div class="floating-coin" style="left: 25%; animation-delay: 5s;">💎</div>
         <div class="floating-coin" style="left: 45%; animation-delay: 10s;">🔥</div>
@@ -786,8 +887,10 @@
         <div class="floating-coin" style="left: 85%; animation-delay: 8s;">⚡</div>
     </div>
 
+    <main>
     <!-- Hero Section -->
-    <section class="hero">
+    <header>
+    <section class="hero" role="banner">
         <div class="logo-container">
             <h1 class="logo">TREND MAFIA</h1>
         </div>
@@ -817,6 +920,7 @@
             </svg>
         </div>
     </section>
+    </header>
 
     <!-- Packages Section -->
     <section class="packages" id="packages">
@@ -838,7 +942,7 @@
                     <li>Basic Support</li>
                     <li>Performance Report</li>
                 </ul>
-                <button class="package-btn" onclick="openTelegram()">Get Started</button>
+                <button class="package-btn" onclick="openTelegram()" aria-label="Get started with 24 hour trending package">Get Started</button>
             </div>
 
             <!-- 3 Days Package -->
@@ -856,7 +960,7 @@
                     <li>Priority Support 24/7</li>
                     <li>Daily Performance Reports</li>
                 </ul>
-                <button class="package-btn" onclick="openTelegram()">Get Started</button>
+                <button class="package-btn" onclick="openTelegram()" aria-label="Get started with 3 day trending package">Get Started</button>
             </div>
 
             <!-- 1 Week Package -->
@@ -873,7 +977,7 @@
                     <li>VIP Support Channel</li>
                     <li>Real-time Analytics</li>
                 </ul>
-                <button class="package-btn" onclick="openTelegram()">Get Started</button>
+                <button class="package-btn" onclick="openTelegram()" aria-label="Get started with 7 day trending package">Get Started</button>
             </div>
         </div>
     </section>
@@ -928,7 +1032,7 @@
         <h2 class="section-title">READY TO TREND?</h2>
         <p class="section-subtitle">Hit us up on Telegram — response time under 5 minutes</p>
 
-        <a href="https://t.me/cyberspartanx" target="_blank" class="telegram-btn">
+        <a href="https://t.me/cyberspartanx" target="_blank" rel="noopener noreferrer" class="telegram-btn" aria-label="Contact Trend Mafia on Telegram">
             <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
             </svg>
@@ -937,6 +1041,7 @@
 
         <p class="contact-note">DM us anytime — <span>@CyberSpartanX</span></p>
     </section>
+    </main>
 
     <!-- Footer -->
     <footer>
