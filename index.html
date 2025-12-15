@@ -289,6 +289,8 @@
             overflow: hidden;
             transition: all 0.4s ease;
             clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+            display: flex;
+            flex-direction: column;
         }
 
         .package-card::before {
@@ -320,7 +322,6 @@
 
         .package-card.featured {
             border-color: var(--neon-pink);
-            transform: scale(1.05);
         }
 
         .package-card.featured::before {
@@ -328,7 +329,7 @@
         }
 
         .package-card.featured:hover {
-            transform: scale(1.05) translateY(-10px);
+            transform: translateY(-10px);
             box-shadow: 0 20px 60px rgba(255, 0, 255, 0.3);
         }
 
@@ -391,6 +392,7 @@
         .package-features {
             list-style: none;
             margin-bottom: 2rem;
+            flex-grow: 1;
         }
 
         .package-features li {
@@ -669,13 +671,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .package-card.featured {
-                transform: none;
-            }
-
-            .package-card.featured:hover {
-                transform: translateY(-10px);
-            }
 
             .steps-container {
                 flex-direction: column;
@@ -718,10 +713,6 @@
         <div class="floating-coin" style="left: 45%; animation-delay: 10s;">🔥</div>
         <div class="floating-coin" style="left: 65%; animation-delay: 15s;">💰</div>
         <div class="floating-coin" style="left: 85%; animation-delay: 8s;">⚡</div>
-    </div>
-
-    <div class="warning-banner">
-        ⚠️ Limited Slots Available — First Come First Served ⚠️
     </div>
 
     <!-- Hero Section -->
@@ -773,7 +764,6 @@
                 <ul class="package-features">
                     <li>24h Trending Position</li>
                     <li>Guaranteed Top 10 Spot</li>
-                    <li>Real Volume Generation</li>
                     <li>Basic Support</li>
                     <li>Performance Report</li>
                 </ul>
@@ -792,10 +782,8 @@
                 <ul class="package-features">
                     <li>72h Trending Position</li>
                     <li>Guaranteed Top 5 Spot</li>
-                    <li>Enhanced Volume Generation</li>
                     <li>Priority Support 24/7</li>
                     <li>Daily Performance Reports</li>
-                    <li>Social Media Boost</li>
                 </ul>
                 <button class="package-btn" onclick="openTelegram()">Get Started</button>
             </div>
@@ -811,11 +799,8 @@
                 <ul class="package-features">
                     <li>Full Week Trending</li>
                     <li>Guaranteed #1 Position</li>
-                    <li>Maximum Volume Generation</li>
                     <li>VIP Support Channel</li>
-                    <li>Real-time Analytics Dashboard</li>
-                    <li>CT Influencer Shills</li>
-                    <li>Post-Campaign Strategy</li>
+                    <li>Real-time Analytics</li>
                 </ul>
                 <button class="package-btn" onclick="openTelegram()">Get Started</button>
             </div>
