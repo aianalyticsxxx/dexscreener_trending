@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TREND MAFIA | DexScreener Trending Service</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-green: #00ff88;
+            --neon-pink: #ff00ff;
+            --neon-blue: #00d4ff;
+            --neon-orange: #ff6b00;
+            --dark-bg: #0a0a0f;
+            --darker-bg: #050508;
+            --card-bg: rgba(15, 15, 25, 0.9);
+            --text-primary: #ffffff;
+            --text-secondary: #8888aa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        /* Animated background */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Glitch effect */
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); }
+            91% { transform: translate(-2px, 1px); }
+            92% { transform: translate(2px, -1px); }
+            93% { transform: translate(-1px, 2px); }
+            94% { transform: translate(1px, -2px); }
+        }
+
+        @keyframes glitchColor {
+            0%, 90%, 100% { text-shadow: none; }
+            91% { text-shadow: -2px 0 var(--neon-pink), 2px 0 var(--neon-blue); }
+            93% { text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-blue); }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .logo-container {
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            background: linear-gradient(135deg, var(--neon-green) 0%, var(--neon-blue) 50%, var(--neon-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glitch 5s infinite, glitchColor 5s infinite;
+            text-shadow: 0 0 40px rgba(0, 255, 136, 0.5);
+            position: relative;
+        }
+
+        .logo::after {
+            content: 'TREND MAFIA';
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(135deg, var(--neon-pink) 0%, var(--neon-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: glitchAfter 5s infinite;
+        }
+
+        @keyframes glitchAfter {
+            0%, 90%, 100% { opacity: 0; transform: translate(0); }
+            91%, 93% { opacity: 0.8; transform: translate(3px, -2px); }
+        }
+
+        .tagline {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            letter-spacing: 0.3em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .subtagline {
+            font-size: 1rem;
+            color: var(--neon-green);
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--neon-green);
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .cta-button {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            border: none;
+            color: var(--dark-bg);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.5);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        .scroll-indicator svg {
+            width: 30px;
+            height: 30px;
+            stroke: var(--neon-green);
+            opacity: 0.6;
+        }
+
+        /* Packages Section */
+        .packages {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 4rem;
+            font-size: 1.1rem;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .package-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+        }
+
+        .package-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+        }
+
+        .package-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .package-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-green);
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.2);
+        }
+
+        .package-card.featured {
+            border-color: var(--neon-pink);
+            transform: scale(1.05);
+        }
+
+        .package-card.featured::before {
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-orange));
+        }
+
+        .package-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+            box-shadow: 0 20px 60px rgba(255, 0, 255, 0.3);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 1rem;
+            right: -2rem;
+            background: linear-gradient(135deg, var(--neon-pink), var(--neon-orange));
+            color: var(--dark-bg);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.3rem 2.5rem;
+            transform: rotate(45deg);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .package-duration {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 0.2em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .package-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .package-card:nth-child(1) .package-name { color: var(--neon-green); }
+        .package-card:nth-child(2) .package-name { color: var(--neon-pink); }
+        .package-card:nth-child(3) .package-name { color: var(--neon-blue); }
+
+        .package-price {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .price-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+        }
+
+        .package-card:nth-child(1) .price-value { color: var(--neon-green); text-shadow: 0 0 30px rgba(0, 255, 136, 0.5); }
+        .package-card:nth-child(2) .price-value { color: var(--neon-pink); text-shadow: 0 0 30px rgba(255, 0, 255, 0.5); }
+        .package-card:nth-child(3) .price-value { color: var(--neon-blue); text-shadow: 0 0 30px rgba(0, 212, 255, 0.5); }
+
+        .price-currency {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .package-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .package-features li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .package-features li::before {
+            content: '>';
+            color: var(--neon-green);
+            font-weight: bold;
+        }
+
+        .package-btn {
+            width: 100%;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 1rem;
+            background: transparent;
+            border: 2px solid;
+            color: inherit;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-card:nth-child(1) .package-btn { border-color: var(--neon-green); color: var(--neon-green); }
+        .package-card:nth-child(2) .package-btn { border-color: var(--neon-pink); color: var(--neon-pink); }
+        .package-card:nth-child(3) .package-btn { border-color: var(--neon-blue); color: var(--neon-blue); }
+
+        .package-btn:hover {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+
+        .package-card:nth-child(2) .package-btn:hover {
+            background: var(--neon-pink);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+        }
+
+        .package-card:nth-child(3) .package-btn:hover {
+            background: var(--neon-blue);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 6rem 2rem;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 255, 136, 0.03) 50%, transparent 100%);
+        }
+
+        .steps-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .step-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: rgba(0, 255, 136, 0.1);
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: var(--card-bg);
+            border: 2px solid var(--neon-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: var(--neon-green);
+        }
+
+        .step-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Testimonials / Social Proof */
+        .social-proof {
+            padding: 6rem 2rem;
+        }
+
+        .ticker-wrap {
+            overflow: hidden;
+            background: rgba(0, 255, 136, 0.05);
+            padding: 1.5rem 0;
+            margin: 3rem 0;
+        }
+
+        .ticker {
+            display: flex;
+            animation: ticker 30s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .ticker-item {
+            flex-shrink: 0;
+            padding: 0 3rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--neon-green);
+            white-space: nowrap;
+        }
+
+        .ticker-item span {
+            color: var(--text-secondary);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 0, 255, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .telegram-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding: 1.5rem 3rem;
+            background: linear-gradient(135deg, #0088cc, #00aaff);
+            border: none;
+            color: white;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 136, 204, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(0, 136, 204, 0.8); }
+        }
+
+        .telegram-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 60px rgba(0, 136, 204, 0.8);
+        }
+
+        .telegram-btn svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .contact-note {
+            margin-top: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .contact-note span {
+            color: var(--neon-green);
+        }
+
+        /* Warning Banner */
+        .warning-banner {
+            background: linear-gradient(90deg, var(--neon-orange), var(--neon-pink));
+            padding: 0.8rem;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--dark-bg);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .disclaimer {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 107, 0, 0.1);
+            border: 1px solid rgba(255, 107, 0, 0.3);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-bar {
+                gap: 1.5rem;
+            }
+
+            .stat-value {
+                font-size: 1.8rem;
+            }
+
+            .packages-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .package-card.featured {
+                transform: none;
+            }
+
+            .package-card.featured:hover {
+                transform: translateY(-10px);
+            }
+
+            .steps-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Floating elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-coin {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: floatCoin 20s linear infinite;
+        }
+
+        @keyframes floatCoin {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="noise-overlay"></div>
+
+    <div class="floating-elements">
+        <div class="floating-coin" style="left: 10%; animation-delay: 0s;">🚀</div>
+        <div class="floating-coin" style="left: 25%; animation-delay: 5s;">💎</div>
+        <div class="floating-coin" style="left: 45%; animation-delay: 10s;">🔥</div>
+        <div class="floating-coin" style="left: 65%; animation-delay: 15s;">💰</div>
+        <div class="floating-coin" style="left: 85%; animation-delay: 8s;">⚡</div>
+    </div>
+
+    <div class="warning-banner">
+        ⚠️ Limited Slots Available — First Come First Served ⚠️
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="logo-container">
+            <h1 class="logo">TREND MAFIA</h1>
+        </div>
+        <p class="tagline">DexScreener Trending Service</p>
+        <p class="subtagline">// GET YOUR TOKEN ON THE RADAR //</p>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-value">500+</div>
+                <div class="stat-label">Tokens Trended</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">98%</div>
+                <div class="stat-label">Success Rate</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">Support</div>
+            </div>
+        </div>
+
+        <a href="#packages" class="cta-button">View Packages</a>
+
+        <div class="scroll-indicator">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Packages Section -->
+    <section class="packages" id="packages">
+        <h2 class="section-title">CHOOSE YOUR POWER</h2>
+        <p class="section-subtitle">Select the package that fits your moon mission</p>
+
+        <div class="packages-grid">
+            <!-- 24h Package -->
+            <div class="package-card">
+                <div class="package-duration">24 HOURS</div>
+                <div class="package-name">QUICK PUMP</div>
+                <div class="package-price">
+                    <span class="price-value">$1,500</span>
+                    <span class="price-currency">USD</span>
+                </div>
+                <ul class="package-features">
+                    <li>24h Trending Position</li>
+                    <li>Guaranteed Top 10 Spot</li>
+                    <li>Real Volume Generation</li>
+                    <li>Basic Support</li>
+                    <li>Performance Report</li>
+                </ul>
+                <button class="package-btn" onclick="openTelegram()">Get Started</button>
+            </div>
+
+            <!-- 3 Days Package -->
+            <div class="package-card featured">
+                <div class="featured-badge">BEST VALUE</div>
+                <div class="package-duration">3 DAYS</div>
+                <div class="package-name">DEGEN SPECIAL</div>
+                <div class="package-price">
+                    <span class="price-value">$3,500</span>
+                    <span class="price-currency">USD</span>
+                </div>
+                <ul class="package-features">
+                    <li>72h Trending Position</li>
+                    <li>Guaranteed Top 5 Spot</li>
+                    <li>Enhanced Volume Generation</li>
+                    <li>Priority Support 24/7</li>
+                    <li>Daily Performance Reports</li>
+                    <li>Social Media Boost</li>
+                </ul>
+                <button class="package-btn" onclick="openTelegram()">Get Started</button>
+            </div>
+
+            <!-- 1 Week Package -->
+            <div class="package-card">
+                <div class="package-duration">7 DAYS</div>
+                <div class="package-name">WHALE MODE</div>
+                <div class="package-price">
+                    <span class="price-value">$6,500</span>
+                    <span class="price-currency">USD</span>
+                </div>
+                <ul class="package-features">
+                    <li>Full Week Trending</li>
+                    <li>Guaranteed #1 Position</li>
+                    <li>Maximum Volume Generation</li>
+                    <li>VIP Support Channel</li>
+                    <li>Real-time Analytics Dashboard</li>
+                    <li>CT Influencer Shills</li>
+                    <li>Post-Campaign Strategy</li>
+                </ul>
+                <button class="package-btn" onclick="openTelegram()">Get Started</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <h2 class="section-title">HOW IT WORKS</h2>
+        <p class="section-subtitle">Three simple steps to trending glory</p>
+
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">01</div>
+                <div class="step-icon">💬</div>
+                <h3 class="step-title">Contact Us</h3>
+                <p class="step-desc">Reach out via Telegram with your token contract address and desired package</p>
+            </div>
+            <div class="step">
+                <div class="step-number">02</div>
+                <div class="step-icon">💎</div>
+                <h3 class="step-title">Payment</h3>
+                <p class="step-desc">Secure payment in crypto (ETH, SOL, USDT) — we start within 1 hour</p>
+            </div>
+            <div class="step">
+                <div class="step-number">03</div>
+                <div class="step-icon">🚀</div>
+                <h3 class="step-title">Moon Time</h3>
+                <p class="step-desc">Watch your token climb the charts while we handle everything</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item">$PEPE <span>+2400% after trending</span></div>
+            <div class="ticker-item">$WOJAK <span>+1800% in 48h</span></div>
+            <div class="ticker-item">$DOGE2 <span>+3200% moon mission</span></div>
+            <div class="ticker-item">$APE <span>+1500% pump</span></div>
+            <div class="ticker-item">$CHAD <span>+2100% gains</span></div>
+            <div class="ticker-item">$MOON <span>+2800% rocket</span></div>
+            <div class="ticker-item">$PEPE <span>+2400% after trending</span></div>
+            <div class="ticker-item">$WOJAK <span>+1800% in 48h</span></div>
+            <div class="ticker-item">$DOGE2 <span>+3200% moon mission</span></div>
+            <div class="ticker-item">$APE <span>+1500% pump</span></div>
+            <div class="ticker-item">$CHAD <span>+2100% gains</span></div>
+            <div class="ticker-item">$MOON <span>+2800% rocket</span></div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h2 class="section-title">READY TO TREND?</h2>
+        <p class="section-subtitle">Hit us up on Telegram — response time under 5 minutes</p>
+
+        <a href="https://t.me/YOUR_TELEGRAM_USERNAME" target="_blank" class="telegram-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+            </svg>
+            Contact on Telegram
+        </a>
+
+        <p class="contact-note">DM us anytime — <span>@YOUR_TELEGRAM_USERNAME</span></p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">TREND MAFIA</div>
+        <p class="footer-text">The Underground Kings of DexScreener Trending</p>
+
+        <div class="disclaimer">
+            <strong>⚠️ DISCLAIMER:</strong> This service is for marketing and promotional purposes only.
+            We do not guarantee any financial returns or token price increases. Cryptocurrency trading involves
+            substantial risk of loss. Past performance of promoted tokens does not guarantee future results.
+            Always do your own research (DYOR) before investing. By using our services, you acknowledge that
+            you understand and accept these risks.
+        </div>
+    </footer>
+
+    <script>
+        // Telegram contact function
+        function openTelegram() {
+            window.open('https://t.me/YOUR_TELEGRAM_USERNAME', '_blank');
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add parallax effect to floating elements
+        document.addEventListener('mousemove', (e) => {
+            const coins = document.querySelectorAll('.floating-coin');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            coins.forEach((coin, i) => {
+                const speed = (i + 1) * 0.5;
+                coin.style.transform = `translate(${x * 20 * speed}px, ${y * 20 * speed}px)`;
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Animate elements on scroll
+        document.querySelectorAll('.package-card, .step').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Counter animation for stats
+        function animateValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                element.textContent = value + (element.dataset.suffix || '');
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Trigger stat animations when visible
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statValues = entry.target.querySelectorAll('.stat-value');
+                    statValues.forEach(stat => {
+                        const text = stat.textContent;
+                        if (text.includes('+')) {
+                            stat.dataset.suffix = '+';
+                            animateValue(stat, 0, parseInt(text), 2000);
+                        } else if (text.includes('%')) {
+                            stat.dataset.suffix = '%';
+                            animateValue(stat, 0, parseInt(text), 2000);
+                        }
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stats-bar').forEach(bar => {
+            statsObserver.observe(bar);
+        });
+    </script>
+</body>
+</html>
